@@ -1,0 +1,347 @@
+<html lang="cs">
+    <head>
+        <meta charset="utf-8">
+        <title>Návěstidla - aplikace pro zjišťování návěstního znaku</title>
+        <style type="text/css">
+            body {
+                margin: 0;
+                font-family: sans-serif;
+                color: #333;
+                padding: 80px 0 60px 0;
+            }
+
+            header {
+                background-color: #EEE;
+                padding: 1px 20px;
+                letter-spacing: 1px;
+                position: absolute;
+                width: 100%;
+                box-sizing: border-box;
+                top: 0;
+            }
+
+            footer {
+                padding: 15px 15px;
+                color: #eee;
+                background-color: #222;
+                display: flex;
+                bottom: 0;
+                position: absolute;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .col-3 {
+                padding: 0 15px;
+                width: 33.33%;
+            }
+
+            .t-right {
+                text-align: right;
+            }
+
+            .t-left {
+                text-align: left;
+            }
+
+            .t-center {
+                text-align: center;
+            }
+
+            a, a:hover, a:active {
+                color: inherit;
+            }
+
+            .signal {
+                text-align: center;
+                height: 100%;
+                padding-bottom: 60px;
+                box-sizing: border-box;
+            }
+
+            .signal svg {
+                height: 100%;
+            }
+
+            .description {
+                text-align: center;
+                font-size: 15pt;
+                font-weight: bold;
+            }
+
+            .clickable {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <h1>Návěstidla</h1>
+            </nav>
+        </header>
+        <main id="app">
+            <div class="signal">
+                <svg viewBox="0 0 200 800" xmlns="http://www.w3.org/2000/svg">
+                    <svg y="10" xmlns="http://www.w3.org/2000/svg">
+                        <g>
+                            <title>Patka</title>
+                            <rect fill="#EFEF04" height="100" width="56" y="1140" x="72"
+                                  stroke="#000" stroke-width="1" rx="40" ry="10"></rect>
+                            <rect fill="#777" height="20" width="90" y="1225" x="55"></rect>
+                            <rect fill="#AAA" height="85" width="26" x="87" y="1140"
+                                  stroke-width="1" stroke="#555"></rect>
+                            <rect width="26" height="3" fill="#555" x="87" y="1140"></rect>
+                        </g>
+                        <g>
+                            <title>Sloup</title>
+                            <rect fill="#AAA" height="680" width="26" x="87" y="460"
+                                  stroke-width="1" stroke="#555"></rect>
+                        </g>
+                        <g>
+                            <title>Name</title>
+                            <rect stroke="#200" height="30" width="80" y="465" x="60"
+                                  stroke-width="1" fill="#F00"></rect>
+                            <text fill="#CCC" y="483" x="100" font-size="22" font-weight="700"
+                                  text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle">
+                                L2
+                            </text>
+                        </g>
+                        <svg width="30" x="85" y="550" height="480" xmlns="http://www.w3.org/2000/svg">
+                            <rect fill="#EEE" width="30" height="120" x="0" y="0"/>
+                            <rect fill="#F22" width="30" height="120" x="0" y="120"/>
+                            <rect fill="#EEE" width="30" height="120" x="0" y="240"/>
+                            <rect fill="#F22" width="30" height="120" x="0" y="360"/>
+                            <rect stroke="#555" stroke-width="1" height="479" width="29" x="0" y="0" fill="none"/>
+                        </svg>
+                        <g>
+                            <title>Dekor</title>
+                            <rect width="18" height="3" fill="#555" x="91" y="510"></rect>
+                            <rect width="18" height="3" fill="#555" x="91" y="1070"></rect>
+                        </g>
+                    </svg>
+                    <svg x="50" xmlns="http://www.w3.org/2000/svg">
+                        <rect stroke="#000" height="470" width="100" stroke-width="1.5" fill="#000" rx="30" ry="7"/>
+
+                        <ellipse class="clickable" stroke="#000" ry="30" rx="30" cy="60" cx="50" fill-opacity="null"
+                                 stroke-opacity="null" stroke-width="1.5" fill="#222" id="color-0"
+                                 onclick="updateState(0)"/>
+                        <ellipse class="clickable" stroke="#000" ry="30" rx="30" cy="130" cx="50" fill-opacity="null"
+                                 stroke-opacity="null" stroke-width="1.5" fill="#222" id="color-1"
+                                 onclick="updateState(1)"/>
+                        <ellipse class="clickable" stroke="#000" ry="30" rx="30" cy="200" cx="50" fill-opacity="null"
+                                 stroke-opacity="null" stroke-width="1.5" fill="#222" id="color-2"
+                                 onclick="updateState(2)"/>
+                        <ellipse class="clickable" stroke="#000" ry="30" rx="30" cy="270" cx="50" fill-opacity="null"
+                                 stroke-opacity="null" stroke-width="1.5" fill="#222" id="color-3"
+                                 onclick="updateState(3)"/>
+                        <ellipse class="clickable" stroke="#000" ry="30" rx="30" cy="340" cx="50" fill-opacity="null"
+                                 stroke-opacity="null" stroke-width="1.5" fill="#222" id="color-4"
+                                 onclick="updateState(4)"/>
+
+                        <rect class="clickable" width="70" height="12" x="15" y="395" fill="#222" id="color-5"
+                              onclick="updateState(5)"/>
+                        <rect class="clickable" width="70" height="12" x="15" y="420" fill="#222" id="color-6"
+                              onclick="updateState(6)"/>
+                    </svg>
+                </svg>
+                <div class="description">
+                    <p id="text">Rychlost 40 km/h a opakování návěsti Očekávejte rychlost 100</p>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div class="t-left col-3">&copy; 2020 - Martin Fabík</div>
+            <div class="t-center col-3"></div>
+            <div class="t-right col-3"><a href="https://github.com/LoogleCZ" title="Martin Fabík - GitHub">GitHub</a>
+            </div>
+        </footer>
+        <script>
+            const LIGHT_STATES = {
+                OFF: 0,
+                LIT: 1,
+                BLINK_SLOW: 2,
+                BLINK_FAST: 3,
+                IND_1: 4,
+                IND_2: 5
+            };
+
+            const COLOR_OFF = "#222";
+            const COLOR_SCHEMA = [
+                "#FF2",
+                "#2F2",
+                "#F22",
+                "#FFF",
+                "#FF2"
+            ];
+
+
+            let currentStatus = [
+                LIGHT_STATES.OFF,
+                LIGHT_STATES.OFF,
+                LIGHT_STATES.LIT,
+                LIGHT_STATES.OFF,
+                LIGHT_STATES.OFF,
+                LIGHT_STATES.OFF,
+                LIGHT_STATES.OFF
+            ];
+
+            const AVAILABLE_STATUS = [
+                [LIGHT_STATES.OFF, LIGHT_STATES.LIT, LIGHT_STATES.BLINK_SLOW, LIGHT_STATES.BLINK_FAST],
+                [LIGHT_STATES.OFF, LIGHT_STATES.LIT, LIGHT_STATES.BLINK_SLOW, LIGHT_STATES.BLINK_FAST],
+                [LIGHT_STATES.OFF, LIGHT_STATES.LIT],
+                [LIGHT_STATES.OFF, LIGHT_STATES.LIT, LIGHT_STATES.BLINK_SLOW],
+                [LIGHT_STATES.OFF, LIGHT_STATES.LIT],
+                [LIGHT_STATES.OFF, LIGHT_STATES.IND_1, LIGHT_STATES.IND_2],
+                [LIGHT_STATES.OFF, LIGHT_STATES.IND_2],
+            ];
+
+            let colors = [
+                "#222",
+                "#222",
+                "#222",
+                "#222",
+                "#222",
+                "#222",
+                "#222"
+            ];
+
+            let innerCounter = 0;
+
+            function recalculateColors() {
+                for (let i = 0; i < currentStatus.length; ++i) {
+                    switch (currentStatus[i]) {
+                        case LIGHT_STATES.OFF: {
+                            colors.splice(i, 1, COLOR_OFF);
+                            break;
+                        }
+                        case LIGHT_STATES.BLINK_SLOW: {
+                            if (innerCounter < 2) {
+                                colors.splice(i, 1, COLOR_OFF);
+
+                            } else {
+                                colors.splice(i, 1, COLOR_SCHEMA[i]);
+                            }
+                            break;
+                        }
+                        case LIGHT_STATES.BLINK_FAST: {
+                            if (innerCounter % 2) {
+                                colors.splice(i, 1, COLOR_OFF);
+                            } else {
+                                colors.splice(i, 1, COLOR_SCHEMA[i]);
+                            }
+                            break;
+                        }
+                        case LIGHT_STATES.LIT: {
+                            colors.splice(i, 1, COLOR_SCHEMA[i]);
+                            break;
+                        }
+                        case LIGHT_STATES.IND_1: {
+                            colors.splice(i, 1, "#FF2");
+                            break;
+                        }
+                        case LIGHT_STATES.IND_2: {
+                            colors.splice(i, 1, "#2F2");
+                            break;
+                        }
+                    }
+                }
+                innerCounter = (innerCounter + 1) % 4;
+                redrawColors();
+            }
+
+            function redrawColors() {
+                for (let i = 0; i < colors.length; ++i) {
+                    let id = "color-" + i;
+                    let element = document.getElementById(id);
+                    element.setAttribute("fill", colors[i]);
+                }
+            }
+
+            function updateState(lightNum) {
+                for (let i = 0; i < AVAILABLE_STATUS[lightNum].length; ++i) {
+                    if (AVAILABLE_STATUS[lightNum][i] === currentStatus[lightNum]) {
+                        currentStatus[lightNum] =
+                            AVAILABLE_STATUS[lightNum][i + 1] !== undefined
+                                ? AVAILABLE_STATUS[lightNum][i + 1]
+                                : AVAILABLE_STATUS[lightNum][0];
+                        break;
+                    }
+                }
+                calculateText();
+            }
+
+            function calculateText() {
+                let text = "-- Neplatná návěsť --";
+                let status = JSON.stringify(currentStatus);
+                let mask = {
+                    "[0,0,0,2,0,0,0]": "Přivolávací návěsť",
+                    "[0,0,1,2,0,0,0]": "Přivolávací návěsť",
+                    "[0,0,1,0,0,0,0]": "Stůj",
+                    "[0,1,0,0,0,0,0]": "Volno",
+                    "[0,3,0,0,0,0,0]": "Očekávejte rychlost 100 km/h",
+                    "[0,2,0,0,0,0,0]": "Očekávejte rychlost 80 km/h",
+                    "[3,0,0,0,0,0,0]": "Očekávejte rychlost 60 km/h",
+                    "[2,0,0,0,0,0,0]": "Očekávejte rychlost 40 km/h",
+                    "[1,0,0,0,0,0,0]": "Výstraha",
+                    "[0,1,0,0,1,5,5]": "Rychlost 100 km/h a volno",
+                    "[0,3,0,0,1,5,5]": "Rychlost 100 km/h a očekávejte rychlost 100 km/h",
+                    "[0,2,0,0,1,5,5]": "Rychlost 100 km/h a očekávejte rychlost 80 km/h",
+                    "[3,0,0,0,1,5,5]": "Rychlost 100 km/h a očekávejte rychlost 60 km/h",
+                    "[2,0,0,0,1,5,5]": "Rychlost 100 km/h a očekávejte rychlost 40 km/h",
+                    "[1,0,0,0,1,5,5]": "Rychlost 100 km/h a výstraha",
+                    "[0,1,0,0,1,5,0]": "Rychlost 80 km/h a volno",
+                    "[0,3,0,0,1,5,0]": "Rychlost 80 km/h a očekávejte rychlost 100 km/h",
+                    "[0,2,0,0,1,5,0]": "Rychlost 80 km/h a očekávejte rychlost 80 km/h",
+                    "[3,0,0,0,1,5,0]": "Rychlost 80 km/h a očekávejte rychlost 60 km/h",
+                    "[2,0,0,0,1,5,0]": "Rychlost 80 km/h a očekávejte rychlost 40 km/h",
+                    "[1,0,0,0,1,5,0]": "Rychlost 80 km/h a výstraha",
+                    "[0,1,0,0,1,4,0]": "Rychlost 60 km/h a volno",
+                    "[0,3,0,0,1,4,0]": "Rychlost 60 km/h a očekávejte rychlost 100 km/h",
+                    "[0,2,0,0,1,4,0]": "Rychlost 60 km/h a očekávejte rychlost 80 km/h",
+                    "[3,0,0,0,1,4,0]": "Rychlost 60 km/h a očekávejte rychlost 60 km/h",
+                    "[2,0,0,0,1,4,0]": "Rychlost 60 km/h a očekávejte rychlost 40 km/h",
+                    "[1,0,0,0,1,4,0]": "Rychlost 60 km/h a výstraha",
+                    "[0,1,0,0,1,0,0]": "Rychlost 40 km/h a volno",
+                    "[0,3,0,0,1,0,0]": "Rychlost 40 km/h a očekávejte rychlost 100 km/h",
+                    "[0,2,0,0,1,0,0]": "Rychlost 40 km/h a očekávejte rychlost 80 km/h",
+                    "[3,0,0,0,1,0,0]": "Rychlost 40 km/h a očekávejte rychlost 60 km/h",
+                    "[2,0,0,0,1,0,0]": "Rychlost 40 km/h a očekávejte rychlost 40 km/h",
+                    "[1,0,0,0,1,0,0]": "Rychlost 40 km/h a výstraha",
+                    "[1,0,0,2,0,0,0]": "Jízda podle rozhledových poměrů",
+                    "[1,0,0,2,1,0,0]": "Rychlost 40 km/h a jízda podle rozhledových poměrů",
+                    "[0,0,0,1,0,0,0]": "Posun dovolen",
+                    "[0,0,1,1,0,0,0]": "Posun dovolen",
+                    "[0,3,0,1,1,0,0]": "Rychlost 40 km/h a opakování návěsti očekávejte rychlost 100 km/h",
+                    "[0,2,0,1,1,0,0]": "Rychlost 40 km/h a opakování návěsti očekávejte rychlost 80 km/h",
+                    "[3,0,0,1,1,0,0]": "Rychlost 40 km/h a opakování návěsti očekávejte rychlost 60 km/h",
+                    "[2,0,0,1,1,0,0]": "Rychlost 40 km/h a opakování návěsti očekávejte rychlost 40 km/h",
+                    "[1,0,0,1,1,0,0]": "Rychlost 40 km/h a opakování návěsti výstraha",
+                    "[0,3,0,1,0,0,0]": "Opakování návěsti očekávejte rychlost 100 km/h",
+                    "[0,2,0,1,0,0,0]": "Opakování návěsti očekávejte rychlost 80 km/h",
+                    "[3,0,0,1,0,0,0]": "Opakování návěsti očekávejte rychlost 60 km/h",
+                    "[2,0,0,1,0,0,0]": "Opakování návěsti očekávejte rychlost 40 km/h",
+                    "[1,0,0,1,0,0,0]": "Opakování návěsti oýstraha",
+                    "[0,1,0,0,1,0,5]": "Rychlost 80 km/h a volno",
+                    "[0,3,0,0,1,0,5]": "Rychlost 80 km/h a očekávejte rychlost 100 km/h",
+                    "[0,2,0,0,1,0,5]": "Rychlost 80 km/h a očekávejte rychlost 80 km/h",
+                    "[3,0,0,0,1,0,5]": "Rychlost 80 km/h a očekávejte rychlost 60 km/h",
+                    "[2,0,0,0,1,0,5]": "Rychlost 80 km/h a očekávejte rychlost 40 km/h",
+                    "[1,0,0,0,1,0,5]": "Rychlost 80 km/h a výstraha",
+                };
+
+                if (mask[status] !== undefined) {
+                    text = mask[status];
+                }
+
+                document.getElementById("text").innerText = text;
+            }
+
+            setInterval(function () {
+                recalculateColors();
+            }, (1000 * 60) / 54 / 2);
+
+            calculateText();
+        </script>
+    </body>
+</html>
